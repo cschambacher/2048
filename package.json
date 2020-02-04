@@ -1,0 +1,33 @@
+{
+  "name": "2048",
+  "version": "1.0.0",
+  "main": "index.jsx",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "start": "webpack --watch --mode=development"
+
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/corina-s/2048.git"
+  },
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/corina-s/2048/issues"
+  },
+  "homepage": "https://github.com/corina-s/2048#readme",
+  "dependencies": {
+    "@babel/core": "^7.8.4",
+    "@babel/preset-env": "^7.8.4",
+    "@babel/preset-react": "^7.8.3",
+    "express": "^4.17.1",
+    "webpack": "^4.41.5",
+    "webpack-cli": "^3.3.10"
+  },
+  "devDependencies": {
+    "nodemon": "^2.0.2"
+  },
+  "keywords": [],
+  "description": ""
+}

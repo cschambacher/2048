@@ -9,6 +9,8 @@ export class Board {
     constructor(){
         this.grid = this.setupBoard();;
         // this.setupBoard();
+        console.log("lost",this.lost())
+        console.log("won", this.won())
     }
 
     setupBoard(){
@@ -47,6 +49,30 @@ export class Board {
             console.log("new tile", grid[pos[0]][pos[1]]);
 
         }
+    }
+    lost() {
+        let lost = false;
+        let empty = 0;
+        this.grid.forEach(row => {
+            row.forEach(tile => {
+                if (tile.value === 0) {
+                    empty ++;
+                }
+            });
+        });
+        return empty === 0;
+    }
+
+    won() {
+        let won = false;
+        this.grid.forEach(row => {
+            row.forEach(tile => {
+                if (tile.value === 2048) {
+                    won = true;
+                }
+            });
+        });
+        return won;
     }
 
     static makeGrid() {

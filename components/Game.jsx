@@ -10,7 +10,9 @@ class Game extends React.Component {
             board: board
         };
         this.handleLeft = this.handleLeft.bind(this);
+        this.handleUp = this.handleUp.bind(this);
         this.handleRight = this.handleRight.bind(this);
+        this.handleDown = this.handleDown.bind(this);
         this.handleKeyPress = this.handleKeyPress.bind(this);
     }
     componentDidMount() {
@@ -25,9 +27,19 @@ class Game extends React.Component {
         newBoard.grid = this.state.board.moveLeft(this.state.board)
         this.updateGame(newBoard);
     }
+    handleUp() {
+        let newBoard = this.state.board;
+        newBoard.grid = this.state.board.moveUp(this.state.board)
+        this.updateGame(newBoard);
+    }
     handleRight() {
         let newBoard = this.state.board;
         newBoard.grid = this.state.board.moveRight(this.state.board)
+        this.updateGame(newBoard);
+    }
+    handleDown() {
+        let newBoard = this.state.board;
+        newBoard.grid = this.state.board.moveDown(this.state.board)
         this.updateGame(newBoard);
     }
     handleKeyPress(event) {
@@ -49,6 +61,10 @@ class Game extends React.Component {
             this.handleLeft();
         } else if (map[event.keyCode] === 1) {
             this.handleRight();
+        } else if (map[event.keyCode] === 0) {
+            this.handleUp();
+        } else if (map[event.keyCode] === 2) {
+            this.handleDown();
         }
     }
 

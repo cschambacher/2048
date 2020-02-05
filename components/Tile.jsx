@@ -9,7 +9,7 @@ class Tile extends React.Component {
 
     render() {
         const tile = this.props.tile;
-        console.log("tile jsx", tile)
+        // console.log("tile jsx",tile)
         let klass, text;
         
         klass = `tile ${tile.value}`;

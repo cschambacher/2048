@@ -11,7 +11,7 @@ class Board extends React.Component {
 
     render() {
         const board = this.props.board;
-        console.log("render", board)
+        // console.log("render", board)
         const that = this;
         return (
             <div id="board">

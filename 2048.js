@@ -61,9 +61,48 @@ export class Board {
             // console.log("row before", row)
             for (var i = 0; i < row.length; i++) { 
                 let tile = row[i];
+                if (tile.value === 0) {
+                    continue;
+                }
                 let newTile = tile;
                 for(let j = i-1; j >= 0; j--){
                     let backTile = row[j];
+                    if (backTile.value === 0){
+                        newTile = backTile;
+                    } else if (backTile.value === tile.value){
+                        newTile = backTile;
+                        break;
+                    }else{
+                        break;
+                    }
+                }
+                newTile.merge(tile);
+            } 
+            
+        });
+        // console.log("move", grid);
+        return grid;
+        
+        // combine tiles
+
+
+    }
+    moveRight(board){
+        let grid = board.grid;
+        console.log("move", grid);
+        // move all left;
+        grid.forEach(row => {
+            // console.log("row before", row)
+            for (var i = row.length-1; i >= 0; i--) { 
+                let tile = row[i];
+                if (tile.value === 0){
+                    continue;
+                }
+                let newTile = tile;
+                console.log("newTile", newTile);
+                for (let j = i + 1; j < row.length; j++){
+                    let backTile = row[j];
+                    console.log("backTile", backTile);
                     if (backTile.value === 0){
                         newTile = backTile;
                     } else if (backTile.value === tile.value){

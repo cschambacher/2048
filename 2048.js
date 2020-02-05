@@ -22,8 +22,6 @@ export class Tile{
 export class Board {
     constructor(){
         this.grid = this.setupBoard();
-        // this.getCols(this.grid);
-        this.move();
     }
 
     setupBoard(){
@@ -38,36 +36,28 @@ export class Board {
 
     addTile(grid){
         let emptyTiles = [];
-        for (let rowIdx = 0; rowIdx < 4; rowIdx++) {
-            for (let colIdx = 0; colIdx < 4; colIdx++) {
-                
-                const tile = grid[rowIdx][colIdx];
-                // console.log("get value", tile.value);
+        grid.forEach(row => {
+            row.forEach(tile => {
                 if (tile.value === 0) {
-                    emptyTiles.push([rowIdx, colIdx]);
+                    emptyTiles.push(tile);
                 }
-            }
-        }
+            });
+        });
+
         console.log(emptyTiles);
+
         if (emptyTiles.length > 0) {
-            let pos = emptyTiles[Math.floor(Math.random() * emptyTiles.length)];
-            // console.log("pos", pos)
-            let r = Math.random(1);
-            let newvalue, tile;
-            newvalue = (r < 0.9 )? 2 : 4;
-            // console.log("value", newvalue);
-            tile = grid[pos[0]][pos[1]]
-            // console.log("old tile", grid[pos[0]][pos[1]]);
-            tile.value = newvalue;
-            console.log("new tile", grid[pos[0]][pos[1]]);
+            let tile = emptyTiles[Math.floor(Math.random() * emptyTiles.length)];
+            tile.value = (Math.random(1) < 0.9) ? 2 : 4;
 
         }
     }
     // move in one direaction for now
-    move(){
-        let grid = this.grid;
+    moveLeft(board){
+        let grid = board.grid;
+        console.log("move", grid);
         // move all left;
-        this.grid.forEach(row => {
+        grid.forEach(row => {
             // console.log("row before", row)
             for (var i = 0; i < row.length; i++) { 
                 let tile = row[i];
@@ -88,8 +78,8 @@ export class Board {
             
         });
         // console.log("move", grid);
-        this.grid = grid;
-        console.log("move", grid);
+        return grid;
+        
         // combine tiles
 
 

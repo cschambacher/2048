@@ -19,7 +19,9 @@ class Game extends React.Component {
         this.handleKeyPress = this.handleKeyPress.bind(this);
     }
     componentDidMount() {
-        document.addEventListener('keydown', this.handleKeyPress);
+        document.addEventListener('keydown', this.handleKeyPress);    
+        this.setState({ bestScore: localStorage.getItem('bestScore') });
+
     }
     componentWillUnmount() {
         document.removeEventListener('keydown', this.handleKeyPress);
@@ -76,6 +78,9 @@ class Game extends React.Component {
         // let newScore = newBoard.grid[1];
         if (newBoard.lost(newBoard.grid)){
             this.setState({ lost: true });
+            if (this.state.score > this.state.bestScore){
+                localStorage.setItem('bestScore', this.state.score);
+            }
         } else if (newBoard.won(newBoard.grid)){
             this.setState({ won: true });
         }
@@ -100,6 +105,7 @@ class Game extends React.Component {
                     <div className="heading">
                         <h1 className="title">2048</h1>
                         <div>{this.message()}</div>
+                        <div>Best Score: {this.state.bestScore}</div>
                         <div className="scores-container">
                             <div className="score-container">Score: {this.state.score}</div>
                         </div>

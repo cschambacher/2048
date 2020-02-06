@@ -81,17 +81,16 @@ class Game extends React.Component {
         if (newBoard.lost(newBoard.grid)){
             this.setState({ lost: true });
         } else if (newBoard.won(newBoard.grid)){
-            this.setState({ lost: true });
+            this.setState({ won: true });
         }
         this.setState({ board: newBoard, score: newBoard.score });
     }
     message(){
         if (this.state.lost) {
             return (<p>You Lost!</p>)
-        } else if (this.state.won){
+        }
+        if (this.state.won){
             return (<p>YOU WON !!!</p>)
-        }else{
-            return (<p>go !</p>)
         }
     }
     render() {

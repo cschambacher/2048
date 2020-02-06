@@ -275,6 +275,7 @@ export class Board {
                 }
             });
         });
+        console.log("won", won)
         return won;
     }
 

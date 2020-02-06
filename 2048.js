@@ -25,6 +25,9 @@ export class Tile{
 export class Board {
     constructor(){
         this.grid = this.setupBoard();
+        // this.lost = false;
+        // this.won = false;
+        // this.score = 0
     }
 
     setupBoard(){
@@ -36,8 +39,7 @@ export class Board {
         return grid;
     }
     
-
-    addTile(grid){
+    options(grid){
         let emptyTiles = [];
         grid.forEach(row => {
             row.forEach(tile => {
@@ -46,12 +48,45 @@ export class Board {
                 }
             });
         });
+        return emptyTiles;
+    }
+    empty(grid){
+        return this.options(grid).length === 0;
+    }
+
+    moves(grid){
+        let cols = this.transpose(grid);
+        let total = grid.concat(cols);
+        for (let i = 0; i < total.length; i++) {
+            let ele = total[i]
+            for (let j = 0; j < ele.length - 1; j++) {
+                let tile = ele[j];
+                let nextTile = ele[j + 1]
+                if (tile.value === nextTile.value) {
+                    return true;
+                }
+            };
+        };
+        return false;
+    }
+
+    addTile(grid){
+        // let emptyTiles = [];
+        // grid.forEach(row => {
+        //     row.forEach(tile => {
+        //         if (tile.value === 0) {
+        //             emptyTiles.push(tile);
+        //         }
+        //     });
+        // });
 
         // console.log(emptyTiles);
 
-        if (emptyTiles.length > 0) {
-            let tile = emptyTiles[Math.floor(Math.random() * emptyTiles.length)];
-            tile.value = (Math.random(1) < 0.9) ? 2 : 4;
+        // if (emptyTiles.length > 0) {
+        let emptyTiles= this.options(grid);
+        if (emptyTiles.length > 0){
+        let tile = emptyTiles[Math.floor(Math.random() * emptyTiles.length)];
+        tile.value = (Math.random(1) < 0.9) ? 2 : 4;
 
         }
     }
@@ -69,6 +104,7 @@ export class Board {
     // move in one direaction for now
     moveLeft(board){
         let grid = board.grid;
+        let moved = false;
         console.log("move", grid);
         // move all left;
         grid.forEach(row => {
@@ -83,9 +119,11 @@ export class Board {
                     let backTile = row[j];
                     if (backTile.value === 0){
                         newTile = backTile;
+                        moved = true;
                     } else if (backTile.value === tile.value && (!backTile.merged)){
                         console.log("backtile.merge", backTile.merge)
                         newTile = backTile;
+                        moved = true;
                         break;
                     }else{
                         break;
@@ -96,12 +134,17 @@ export class Board {
             
         });
         grid = this.resetFlag(grid);
-        this.addTile(grid);// console.log("move", grid);
+        if (moved){
+            this.addTile(grid);
+            
+        }
+        // console.log("move", grid);
         return grid;
     }
     moveUp(board){
         let grid = board.grid;
-        let cols = this.transpose(grid)
+        let cols = this.transpose(grid);
+        let moved = false;
         console.log("move", cols);
         // move all left;
         cols.forEach(row => {
@@ -116,8 +159,10 @@ export class Board {
                     let backTile = row[j];
                     if (backTile.value === 0){
                         newTile = backTile;
+                        moved = true;
                     } else if (backTile.value === tile.value && (!backTile.merged)){
                         newTile = backTile;
+                        moved = true;
                         break;
                     }else{
                         break;
@@ -129,12 +174,15 @@ export class Board {
         });
         grid = this.transpose(cols);
         grid = this.resetFlag(grid);
-        this.addTile(grid);// console.log("move", grid);
+        if (moved) {
+            this.addTile(grid);
+        };// console.log("move", grid);
         return grid;
     }
 
     moveRight(board){
         let grid = board.grid;
+        let moved = false;
         console.log("move", grid);
         // move all left;
         grid.forEach(row => {
@@ -151,8 +199,10 @@ export class Board {
                     console.log("backTile", backTile);
                     if (backTile.value === 0){
                         newTile = backTile;
+                        moved = true;
                     } else if (backTile.value === tile.value && (!backTile.merged)){
                         newTile = backTile;
+                        moved = true
                         break;
                     }else{
                         break;
@@ -163,7 +213,9 @@ export class Board {
             
         });
         grid = this.resetFlag(grid);
-        this.addTile(grid);
+        if (moved) {
+            this.addTile(grid);
+        }
         return grid;
         
         // combine tiles
@@ -172,7 +224,8 @@ export class Board {
     }
     moveDown(board){
         let grid = board.grid;
-        let cols = this.transpose(grid)
+        let cols = this.transpose(grid);
+        let moved = false;
         console.log("move", cols);
         // move all left;
         cols.forEach(row => {
@@ -189,8 +242,10 @@ export class Board {
                     console.log("backTile", backTile);
                     if (backTile.value === 0){
                         newTile = backTile;
+                        moved = true;
                     } else if (backTile.value === tile.value && (!backTile.merged)){
                         newTile = backTile;
+                        moved = true;
                         break;
                     }else{
                         break;
@@ -202,7 +257,9 @@ export class Board {
         });
         grid = this.transpose(cols);
         grid = this.resetFlag(grid);
-        this.addTile(grid);// console.log("move", grid);
+        if (moved) {
+            this.addTile(grid);
+        };// console.log("move", grid);
         return grid;
         
         // combine tiles
@@ -214,22 +271,15 @@ export class Board {
 
     }
 
-    lost() {
-        let lost = false;
-        let empty = 0;
-        this.grid.forEach(row => {
-            row.forEach(tile => {
-                if (tile.value === 0) {
-                    empty ++;
-                }
-            });
-        });
-        return empty === 0;
+    lost(grid) {
+        let lost = (this.empty(grid) && (!this.moves(grid)));
+        console.log("lost", lost)
+        return lost;
     }
 
-    won() {
+    won(grid) {
         let won = false;
-        this.grid.forEach(row => {
+        grid.forEach(row => {
             row.forEach(tile => {
                 if (tile.value === 2048) {
                     won = true;
@@ -238,6 +288,7 @@ export class Board {
         });
         return won;
     }
+
     transpose(grid){
         let cols = [[],[],[],[]]
         for(let i = 0; i < 4; i++){

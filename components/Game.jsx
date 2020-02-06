@@ -7,7 +7,10 @@ class Game extends React.Component {
         super(props);
         const board = new Puzzle.Board();
         this.state = {
-            board: board
+            board: board,
+            lost: false,
+            won: false,
+            score: 0
         };
         this.handleLeft = this.handleLeft.bind(this);
         this.handleUp = this.handleUp.bind(this);
@@ -68,8 +71,16 @@ class Game extends React.Component {
         }
     }
 
-
+    restartGame() {
+        const board = new Puzzle.Board();
+        this.setState({ board: board });
+    }
     updateGame(newBoard) {
+        if (newBoard.lost(newBoard.grid)){
+            this.setState({ lost: true });
+        } else if (newBoard.won(newBoard.grid)){
+            this.setState({ lost: true });
+        }
         this.setState({ board: newBoard });
     }
 
@@ -77,8 +88,24 @@ class Game extends React.Component {
         
         return (
             <div>
-                <h1>Helloooooo</h1>
+                <div className="header">
+
+                </div>
+                <div className="game-container">
+                    <div className="heading">
+                        <h1 className="title">2048</h1>
+                        <div className="scores-container">
+                            <div className="score-container">Score: 0</div>
+                        </div>
+                    </div>
                 <Board board={this.state.board}  />
+                    <p className="game-explanation">
+                        <strong className="important">How to play:</strong> Use your <strong>arrow keys</strong> to move the tiles. When two tiles with the same number touch, they <strong>merge into one!</strong>
+                    </p>
+                </div>
+                <div className="footer">
+
+                </div>
             </div>
         )
     }

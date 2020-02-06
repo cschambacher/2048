@@ -12,7 +12,7 @@ class Tile extends React.Component {
         // console.log("tile jsx",tile)
         let klass, text;
         
-        klass = `tile ${tile.value}`;
+        klass = tile.value > 1000 ? `tile tile${tile.value} big` : `tile tile${tile.value}`;
         text = (tile.value > 0 ? `${tile.value} ` : "");
         return (
             <div className={klass} >{text}</div>

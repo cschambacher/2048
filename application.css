@@ -16,9 +16,11 @@ h1 {
 }
 
 p {
-  font-size: 28px;
+  font-size: 16px;
   text-align: center;
 }
+strong.important {
+  text-transform: uppercase; }
 #board{
     display: flex;
     flex-direction: column;
@@ -47,43 +49,56 @@ p {
     justify-content: center;
   height: 100px;
   width: 100px;
-  background: lightgray;
+  background: whitesmoke;
   /* float: left; */
   border-style: outset;
   border-width: 2px;
   /* line-height: 20px; */
+  border-radius: 10px;
   padding: 3px;
-  font-size: 64px;
+  font-size: 60px;
   font-weight: bold;
   position: relative;
   text-align: center;
 }
-
-.explored {
-  border-style: inset;
+.big{
+  font-size: 40px;
 }
 
-.modal-screen {
-  z-index: 998;
-  position: absolute;
-  top: 0%;
-  bottom: 0%;
-  left: 0%;
-  right: 0%;
-  background: rgba(0, 0, 0, .3);
+.tile2 {
+  background: #81f5ff;
+}
+.tile4 {
+  background: #a0ffe6;
+}
+.tile8 {
+  background: #ffffdd;
+}
+.tile16 {
+  background:#FFD5E5;
+}
+.tile32 {
+  background:#61d4b3;
+}
+.tile64 {
+  background:#fdd365;
+}
+.tile128 {
+  background: #fb8d62;
+}
+.tile256 {
+  background:#fd2eb3;
+}
+.tile512 {
+  background:#66cccc;
+}
+.tile1024 {
+  background:#cc0066;
+}
+.tile2048 {
+  background:#FFCC00;
+}
+.tile4096 {
+  background: #ff6666;
 }
 
-.modal-content {
-  z-index: 999;
-  position: absolute;
-  background: white;
-  border-radius: 5px;
-  border: 1px solid black;
-  font-size: 20px;
-  width: 200px;
-  height: 120px;
-  top: 50%;
-  left: 50%;
-  text-align: center;
-  transform: translateX(-50%) translateY(-50%);
-}

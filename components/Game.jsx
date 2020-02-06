@@ -76,14 +76,24 @@ class Game extends React.Component {
         this.setState({ board: board });
     }
     updateGame(newBoard) {
+        console.log("update", newBoard)
+        // let newScore = newBoard.grid[1];
         if (newBoard.lost(newBoard.grid)){
             this.setState({ lost: true });
         } else if (newBoard.won(newBoard.grid)){
             this.setState({ lost: true });
         }
-        this.setState({ board: newBoard });
+        this.setState({ board: newBoard, score: newBoard.score });
     }
-
+    message(){
+        if (this.state.lost) {
+            return (<p>You Lost!</p>)
+        } else if (this.state.won){
+            return (<p>YOU WON !!!</p>)
+        }else{
+            return (<p>go !</p>)
+        }
+    }
     render() {
         
         return (
@@ -94,8 +104,9 @@ class Game extends React.Component {
                 <div className="game-container">
                     <div className="heading">
                         <h1 className="title">2048</h1>
+                        <div>{this.message()}</div>
                         <div className="scores-container">
-                            <div className="score-container">Score: 0</div>
+                            <div className="score-container">Score: {this.state.score}</div>
                         </div>
                     </div>
                 <Board board={this.state.board}  />

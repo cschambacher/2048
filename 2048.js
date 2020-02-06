@@ -13,8 +13,7 @@ export class Tile{
         if(this.value === 0){
             this.value = otherTile.value;
         }else{
-            this.value *= 2;
-            this.merged = true;     
+            this.value *= 2;   
         }
        
         otherTile.value = 0;
@@ -25,17 +24,14 @@ export class Tile{
 export class Board {
     constructor(){
         this.grid = this.setupBoard();
-        // this.lost = false;
-        // this.won = false;
-        // this.score = 0
+        this.score = 0;
+    
     }
 
     setupBoard(){
         const grid = Board.makeGrid();
-        console.table(grid);
         this.addTile(grid);
         this.addTile(grid);
-        console.table(grid);
         return grid;
     }
     
@@ -71,18 +67,6 @@ export class Board {
     }
 
     addTile(grid){
-        // let emptyTiles = [];
-        // grid.forEach(row => {
-        //     row.forEach(tile => {
-        //         if (tile.value === 0) {
-        //             emptyTiles.push(tile);
-        //         }
-        //     });
-        // });
-
-        // console.log(emptyTiles);
-
-        // if (emptyTiles.length > 0) {
         let emptyTiles= this.options(grid);
         if (emptyTiles.length > 0){
         let tile = emptyTiles[Math.floor(Math.random() * emptyTiles.length)];
@@ -105,6 +89,7 @@ export class Board {
     moveLeft(board){
         let grid = board.grid;
         let moved = false;
+        
         console.log("move", grid);
         // move all left;
         grid.forEach(row => {
@@ -123,6 +108,7 @@ export class Board {
                     } else if (backTile.value === tile.value && (!backTile.merged)){
                         console.log("backtile.merge", backTile.merge)
                         newTile = backTile;
+                        this.score += newTile.value * 2;
                         moved = true;
                         break;
                     }else{
@@ -145,6 +131,7 @@ export class Board {
         let grid = board.grid;
         let cols = this.transpose(grid);
         let moved = false;
+       
         console.log("move", cols);
         // move all left;
         cols.forEach(row => {
@@ -162,6 +149,7 @@ export class Board {
                         moved = true;
                     } else if (backTile.value === tile.value && (!backTile.merged)){
                         newTile = backTile;
+                        this.score += newTile.value * 2;
                         moved = true;
                         break;
                     }else{
@@ -183,6 +171,7 @@ export class Board {
     moveRight(board){
         let grid = board.grid;
         let moved = false;
+      
         console.log("move", grid);
         // move all left;
         grid.forEach(row => {
@@ -202,6 +191,7 @@ export class Board {
                         moved = true;
                     } else if (backTile.value === tile.value && (!backTile.merged)){
                         newTile = backTile;
+                        this.score += newTile.value * 2;
                         moved = true
                         break;
                     }else{
@@ -225,6 +215,7 @@ export class Board {
     moveDown(board){
         let grid = board.grid;
         let cols = this.transpose(grid);
+   
         let moved = false;
         console.log("move", cols);
         // move all left;
@@ -245,6 +236,7 @@ export class Board {
                         moved = true;
                     } else if (backTile.value === tile.value && (!backTile.merged)){
                         newTile = backTile;
+                        this.score += newTile.value * 2;
                         moved = true;
                         break;
                     }else{
@@ -267,9 +259,6 @@ export class Board {
 
     }
 
-    combine(){
-
-    }
 
     lost(grid) {
         let lost = (this.empty(grid) && (!this.moves(grid)));

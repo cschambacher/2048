@@ -10,10 +10,15 @@ export class Tile{
         if(this === otherTile){
             return;
         }
+
+        this.board.moved = true;
+
         if(this.value === 0){
             this.value = otherTile.value;
         }else{
             this.value *= 2;   
+            this.merged = true;
+            this.board.score += this.value;
         }
        
         otherTile.value = 0;
@@ -25,11 +30,11 @@ export class Board {
     constructor(){
         this.grid = this.setupBoard();
         this.score = 0;
-    
+        this.moved = false;
     }
 
     setupBoard(){
-        const grid = Board.makeGrid();
+        const grid = Board.makeGrid(this);
         this.addTile(grid);
         this.addTile(grid);
         return grid;
@@ -83,12 +88,12 @@ export class Board {
                 }
             });
         });
+        this.moved = false;
         return grid;
     }
     // move in one direaction for now
     moveLeft(board){
         let grid = board.grid;
-        let moved = false;
         
         console.log("move", grid);
         // move all left;
@@ -104,12 +109,8 @@ export class Board {
                     let backTile = row[j];
                     if (backTile.value === 0){
                         newTile = backTile;
-                        moved = true;
                     } else if (backTile.value === tile.value && (!backTile.merged)){
-                        console.log("backtile.merge", backTile.merge)
                         newTile = backTile;
-                        this.score += newTile.value * 2;
-                        moved = true;
                         break;
                     }else{
                         break;
@@ -119,18 +120,17 @@ export class Board {
             } 
             
         });
-        grid = this.resetFlag(grid);
-        if (moved){
+        console.log(this);
+        if (this.moved){
             this.addTile(grid);
-            
         }
+        grid = this.resetFlag(grid);
         // console.log("move", grid);
         return grid;
     }
     moveUp(board){
         let grid = board.grid;
         let cols = this.transpose(grid);
-        let moved = false;
        
         console.log("move", cols);
         // move all left;
@@ -146,11 +146,8 @@ export class Board {
                     let backTile = row[j];
                     if (backTile.value === 0){
                         newTile = backTile;
-                        moved = true;
                     } else if (backTile.value === tile.value && (!backTile.merged)){
                         newTile = backTile;
-                        this.score += newTile.value * 2;
-                        moved = true;
                         break;
                     }else{
                         break;
@@ -161,16 +158,15 @@ export class Board {
             
         });
         grid = this.transpose(cols);
-        grid = this.resetFlag(grid);
-        if (moved) {
+        if (this.moved) {
             this.addTile(grid);
         };// console.log("move", grid);
+        grid = this.resetFlag(grid);
         return grid;
     }
 
     moveRight(board){
         let grid = board.grid;
-        let moved = false;
       
         console.log("move", grid);
         // move all left;
@@ -188,11 +184,8 @@ export class Board {
                     console.log("backTile", backTile);
                     if (backTile.value === 0){
                         newTile = backTile;
-                        moved = true;
                     } else if (backTile.value === tile.value && (!backTile.merged)){
                         newTile = backTile;
-                        this.score += newTile.value * 2;
-                        moved = true
                         break;
                     }else{
                         break;
@@ -202,10 +195,10 @@ export class Board {
             } 
             
         });
-        grid = this.resetFlag(grid);
-        if (moved) {
+        if (this.moved) {
             this.addTile(grid);
         }
+        grid = this.resetFlag(grid);
         return grid;
         
         // combine tiles
@@ -216,7 +209,6 @@ export class Board {
         let grid = board.grid;
         let cols = this.transpose(grid);
    
-        let moved = false;
         console.log("move", cols);
         // move all left;
         cols.forEach(row => {
@@ -233,11 +225,8 @@ export class Board {
                     console.log("backTile", backTile);
                     if (backTile.value === 0){
                         newTile = backTile;
-                        moved = true;
                     } else if (backTile.value === tile.value && (!backTile.merged)){
                         newTile = backTile;
-                        this.score += newTile.value * 2;
-                        moved = true;
                         break;
                     }else{
                         break;
@@ -248,10 +237,10 @@ export class Board {
             
         });
         grid = this.transpose(cols);
-        grid = this.resetFlag(grid);
-        if (moved) {
+        if (this.moved) {
             this.addTile(grid);
         };// console.log("move", grid);
+        grid = this.resetFlag(grid);
         return grid;
         
         // combine tiles
@@ -291,14 +280,14 @@ export class Board {
         return cols;
     }
     
-    static makeGrid() {
+    static makeGrid(board) {
         const grid = [];
 
         for (let i = 0; i < 4; i++) {
             grid.push([]);
             // console.log(grid);
             for (let j = 0; j < 4; j++) {
-                const tile = new Tile(this, [i, j], 0);
+                const tile = new Tile(board, [i, j], 0);
                 grid[i].push(tile);
             }
         }

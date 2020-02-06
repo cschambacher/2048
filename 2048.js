@@ -1,7 +1,6 @@
 export class Tile{
-    constructor(board, pos, value) {
+    constructor(board, value) {
         this.board = board;
-        this.pos = pos;
         this.value = value;
         this.merged = false;
     }
@@ -287,7 +286,7 @@ export class Board {
             grid.push([]);
             // console.log(grid);
             for (let j = 0; j < 4; j++) {
-                const tile = new Tile(board, [i, j], 0);
+                const tile = new Tile(board, 0);
                 grid[i].push(tile);
             }
         }

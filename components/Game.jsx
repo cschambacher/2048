@@ -26,24 +26,20 @@ class Game extends React.Component {
     }
     // change code above this line
     handleLeft() {
-        let newBoard = this.state.board;
-        newBoard.grid = this.state.board.moveLeft(this.state.board)
-        this.updateGame(newBoard);
+        this.state.board.moveLeft(this.state.board)
+        this.updateGame(this.state.board);
     }
     handleUp() {
-        let newBoard = this.state.board;
-        newBoard.grid = this.state.board.moveUp(this.state.board)
-        this.updateGame(newBoard);
+        this.state.board.moveUp(this.state.board)
+        this.updateGame(this.state.board);
     }
     handleRight() {
-        let newBoard = this.state.board;
-        newBoard.grid = this.state.board.moveRight(this.state.board)
-        this.updateGame(newBoard);
+        this.state.board.moveRight(this.state.board)
+        this.updateGame(this.state.board);
     }
     handleDown() {
-        let newBoard = this.state.board;
-        newBoard.grid = this.state.board.moveDown(this.state.board)
-        this.updateGame(newBoard);
+        this.state.board.moveDown(this.state.board)
+        this.updateGame(this.state.board);
     }
     handleKeyPress(event) {
         var map = {

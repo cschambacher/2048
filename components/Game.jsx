@@ -10,8 +10,10 @@ class Game extends React.Component {
             board: board,
             lost: false,
             won: false,
-            score: 0
+            score: 0,
+            bestScore: 0
         };
+       
         this.handleLeft = this.handleLeft.bind(this);
         this.handleUp = this.handleUp.bind(this);
         this.handleRight = this.handleRight.bind(this);
@@ -19,7 +21,7 @@ class Game extends React.Component {
         this.handleKeyPress = this.handleKeyPress.bind(this);
     }
     componentDidMount() {
-        document.addEventListener('keydown', this.handleKeyPress);    
+        document.addEventListener('keydown', this.handleKeyPress); 
         this.setState({ bestScore: localStorage.getItem('bestScore') });
 
     }
@@ -74,17 +76,25 @@ class Game extends React.Component {
         this.setState({ board: board });
     }
     updateGame(newBoard) {
-        console.log("update", newBoard)
-        // let newScore = newBoard.grid[1];
         if (newBoard.lost(newBoard.grid)){
             this.setState({ lost: true });
             if (this.state.score > this.state.bestScore){
                 localStorage.setItem('bestScore', this.state.score);
             }
+            localStorage.removeItem('lastGame');
+            return;
         } else if (newBoard.won(newBoard.grid)){
             this.setState({ won: true });
         }
         this.setState({ board: newBoard, score: newBoard.score });
+        const currBoard = JSON.stringify(this.state.board, (key, value) => {
+            if (key == 'board') {
+                return null;
+            } else {
+                return value;
+            };
+        });
+        localStorage.setItem('lastGame', currBoard);
     }
     message(){
         if (this.state.lost) {
@@ -94,8 +104,10 @@ class Game extends React.Component {
             return (<p>YOU WON !!!</p>)
         }
     }
+   
     render() {
-        
+        console.log("ls", JSON.parse(localStorage.getItem('lastGame')))
+        // const currBoard =  || this.state.board;
         return (
             <div>
                 <div className="header">

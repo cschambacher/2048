@@ -26,9 +26,31 @@ export class Tile{
 
 export class Board {
     constructor(){
-        this.grid = this.setupBoard();
-        this.score = 0;
-        this.moved = false;
+        const preloadedState = JSON.parse(localStorage.getItem('lastGame'));
+        if (preloadedState) {    
+            this.grid = this.preload(preloadedState.grid),
+            this.score = preloadedState.score,
+            this.moved = false
+        } else {
+            this.grid = this.setupBoard();
+            this.score = 0;
+            this.moved = false;
+        }
+    }
+   
+    preload(preloadedGrid){
+        const grid = [];
+
+        for (let i = 0; i < 4; i++) {
+            grid.push([]);
+            for (let j = 0; j < 4; j++) {
+                const preloadedTile = preloadedGrid[i][j];
+                const tile = new Tile(this, preloadedTile.value);
+                grid[i].push(tile);
+            }
+        }
+        console.log("preload", grid);
+        return grid;
     }
 
     setupBoard(){
@@ -187,3 +209,5 @@ export class Board {
     }
 
 }
+
+

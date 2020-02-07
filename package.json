@@ -11,7 +11,7 @@
     "dev": "webpack --watch --mode=development",
     "webpack": "webpack",
     "start": "lite-server",
-    "heroku-postbuild": "NPM_CONFIG_PRODUCTION=false npm install && npm run webpack"
+    "heroku-postbuild": "NPM_CONFIG_PRODUCTION=false npm install"
   },
   "repository": {
     "type": "git",

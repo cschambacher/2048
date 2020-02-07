@@ -132,12 +132,12 @@ class Game extends React.Component {
         return (
             <div>
                 <div className="header">
-                    <h1 className="title">2048</h1>
+                    <h1 className="title"> 2048</h1>
                 </div>
                 <div className="game-container">
                     <div className="heading">
                         <div className="left-container">
-                            
+
                         </div>
                         <div className="center-container">
                         <div>{this.message()}</div>

@@ -26,16 +26,20 @@ export class Tile{
 
 export class Board {
     constructor(){
-        const preloadedState = JSON.parse(localStorage.getItem('lastGame'));
-        if (preloadedState) {    
-            this.grid = this.preload(preloadedState.grid),
-            this.score = preloadedState.score,
-            this.moved = false
-        } else {
-            this.grid = this.setupBoard();
-            this.score = 0;
-            this.moved = false;
-        }
+        this.grid = [];
+        this.score = 0;
+        this.moved = false;
+        this.setupBoard();
+        // const preloadedState = JSON.parse(localStorage.getItem('lastGame'));
+        // if (preloadedState) {    
+        //     this.grid = this.preload(preloadedState.grid),
+        //     this.score = preloadedState.score,
+        //     this.moved = false
+        // } else {
+        //     this.grid = this.setupBoard();
+        //     this.score = 0;
+        //     this.moved = false;
+        // }
     }
    
     preload(preloadedGrid){
@@ -54,10 +58,20 @@ export class Board {
     }
 
     setupBoard(){
-        const grid = Board.makeGrid(this);
-        this.addTile(grid);
-        this.addTile(grid);
-        return grid;
+        const preloadedState = JSON.parse(localStorage.getItem('lastGame'));
+        console.log("setup", preloadedState);
+        if (preloadedState) {
+            this.grid = this.preload(preloadedState.grid),
+            this.score = preloadedState.score,
+            this.moved = false
+        } else {
+            this.grid = Board.makeGrid(this);
+            this.score = 0;
+            this.moved = false;
+            this.addTile(this.grid);
+            this.addTile(this.grid);
+        }
+        // return grid;
     }
     
     options(grid){

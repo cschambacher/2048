@@ -13,22 +13,27 @@ class Game extends React.Component {
             score: 0,
             bestScore: 0
         };
-       
+
+        this.restartGame = this.restartGame.bind(this);
+        this.saveGame = this.saveGame.bind(this);
+
         this.handleLeft = this.handleLeft.bind(this);
         this.handleUp = this.handleUp.bind(this);
         this.handleRight = this.handleRight.bind(this);
         this.handleDown = this.handleDown.bind(this);
         this.handleKeyPress = this.handleKeyPress.bind(this);
     }
+
     componentDidMount() {
         document.addEventListener('keydown', this.handleKeyPress); 
-        this.setState({ bestScore: localStorage.getItem('bestScore') });
+        this.setState({ score: localStorage.getItem('lastScore'), bestScore: localStorage.getItem('bestScore') });
 
     }
+
     componentWillUnmount() {
         document.removeEventListener('keydown', this.handleKeyPress);
     }
-    // change code above this line
+
     handleLeft() {
         this.state.board.moveLeft(this.state.board)
         this.updateGame(this.state.board);
@@ -72,21 +77,35 @@ class Game extends React.Component {
     }
 
     restartGame() {
+        localStorage.removeItem('lastGame');
         const board = new Puzzle.Board();
-        this.setState({ board: board });
+        this.setState({ board: board, score: 0, bestScore:localStorage.getItem('bestScore') });
     }
+
     updateGame(newBoard) {
+        // check if lost
         if (newBoard.lost(newBoard.grid)){
             this.setState({ lost: true });
+            // update bestScore
             if (this.state.score > this.state.bestScore){
                 localStorage.setItem('bestScore', this.state.score);
             }
+            // reset the score
+            this.setState({ score: 0 });
+            // erase lastGame
             localStorage.removeItem('lastGame');
+            // need to return
             return;
+        // check if won
         } else if (newBoard.won(newBoard.grid)){
             this.setState({ won: true });
         }
+        // every time
         this.setState({ board: newBoard, score: newBoard.score });
+        this.saveGame(this.state.board, this.state.score);
+       
+    }
+    saveGame(board, score){
         const currBoard = JSON.stringify(this.state.board, (key, value) => {
             if (key == 'board') {
                 return null;
@@ -95,6 +114,7 @@ class Game extends React.Component {
             };
         });
         localStorage.setItem('lastGame', currBoard);
+        localStorage.setItem('lastScore', score);
     }
     message(){
         if (this.state.lost) {
@@ -106,7 +126,7 @@ class Game extends React.Component {
     }
    
     render() {
-        console.log("ls", JSON.parse(localStorage.getItem('lastGame')))
+        // console.log("ls", JSON.parse(localStorage.getItem('lastGame')))
         // const currBoard =  || this.state.board;
         return (
             <div>
@@ -117,6 +137,7 @@ class Game extends React.Component {
                     <div className="heading">
                         <h1 className="title">2048</h1>
                         <div>{this.message()}</div>
+                        <button onClick={this.restartGame}>Play Again</button>
                         <div>Best Score: {this.state.bestScore}</div>
                         <div className="scores-container">
                             <div className="score-container">Score: {this.state.score}</div>

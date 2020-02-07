@@ -1,5 +1,6 @@
 import React from 'react';
 import * as Puzzle from '../2048';
+import Footer from './footer';
 import Board from './board';
 
 class Game extends React.Component {
@@ -131,25 +132,29 @@ class Game extends React.Component {
         return (
             <div>
                 <div className="header">
-
+                    <h1 className="title">2048</h1>
                 </div>
                 <div className="game-container">
                     <div className="heading">
-                        <h1 className="title">2048</h1>
+                        <div className="left-container">
+                            
+                        </div>
+                        <div className="center-container">
                         <div>{this.message()}</div>
                         <button onClick={this.restartGame}>Play Again</button>
-                        <div>Best Score: {this.state.bestScore}</div>
-                        <div className="scores-container">
-                            <div className="score-container">Score: {this.state.score}</div>
                         </div>
-                    </div>
-                <Board board={this.state.board}  />
-                    <p className="game-explanation">
-                        <strong className="important">How to play:</strong> Use your <strong>arrow keys</strong> to move the tiles. When two tiles with the same number touch, they <strong>merge into one!</strong>
-                    </p>
+                        <div className="right-container">
+                            <div className="bestscore">Best Score: {this.state.bestScore}</div>
+                            <div className="score">Score: {this.state.score}</div>
+                        </div>
+                    </div >
+                        <Board board={this.state.board}  />
+                        <p className="game-explanation">
+                            <strong className="important">How to play:</strong> Use your <strong>arrow keys</strong> to move the tiles. When two tiles with the same number touch, they <strong>merge into one!</strong>
+                        </p>
                 </div>
                 <div className="footer">
-
+                   <Footer/>
                 </div>
             </div>
         )

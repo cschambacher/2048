@@ -1,12 +1,13 @@
 import React from 'react';
 import * as Puzzle from '../2048';
-import Footer from './footer';
+
 import Board from './board';
 
 class Game extends React.Component {
     constructor(props) {
         super(props);
         const board = new Puzzle.Board();
+       
         this.state = {
             board: board,
             lost: false,
@@ -27,7 +28,8 @@ class Game extends React.Component {
 
     componentDidMount() {
         document.addEventListener('keydown', this.handleKeyPress); 
-        this.setState({ score: localStorage.getItem('lastScore'), bestScore: localStorage.getItem('bestScore') });
+        const best = localStorage.getItem('bestScore') || 0;
+        this.setState({ score: localStorage.getItem('lastScore'), bestScore: best});
 
     }
 
@@ -36,18 +38,22 @@ class Game extends React.Component {
     }
 
     handleLeft() {
-        this.state.board.moveLeft(this.state.board)
+   
+        this.state.board.moveLeft(this.state.board);
         this.updateGame(this.state.board);
     }
     handleUp() {
+  
         this.state.board.moveUp(this.state.board)
         this.updateGame(this.state.board);
     }
     handleRight() {
+        
         this.state.board.moveRight(this.state.board)
         this.updateGame(this.state.board);
     }
     handleDown() {
+      
         this.state.board.moveDown(this.state.board)
         this.updateGame(this.state.board);
     }
@@ -67,12 +73,16 @@ class Game extends React.Component {
             65: 3  // A
         };
         if (map[event.keyCode] === 3) {
+            event.preventDefault();
             this.handleLeft();
         } else if (map[event.keyCode] === 1) {
+            event.preventDefault();
             this.handleRight();
         } else if (map[event.keyCode] === 0) {
+            event.preventDefault();
             this.handleUp();
         } else if (map[event.keyCode] === 2) {
+            event.preventDefault();
             this.handleDown();
         }
     }
@@ -137,24 +147,25 @@ class Game extends React.Component {
                 <div className="game-container">
                     <div className="heading">
                         <div className="left-container">
-
-                        </div>
-                        <div className="center-container">
-                        <div>{this.message()}</div>
-                        <button onClick={this.restartGame}>Play Again</button>
+                            <button onClick={this.restartGame}>Play Again</button>
                         </div>
                         <div className="right-container">
                             <div className="bestscore">Best Score: {this.state.bestScore}</div>
                             <div className="score">Score: {this.state.score}</div>
                         </div>
                     </div >
+                        <div className="message">{this.message()}</div>
                         <Board board={this.state.board}  />
                         <p className="game-explanation">
-                            <strong className="important">How to play:</strong> Use your <strong>arrow keys</strong> to move the tiles. When two tiles with the same number touch, they <strong>merge into one!</strong>
+                            How to play: Use your arrow keys to move the tiles. When two tiles with the same number touch, they merge into one!
                         </p>
                 </div>
                 <div className="footer">
-                   <Footer/>
+                    <div>&copy; 2020 Corina Schambacher</div>
+
+                    <div id="footer-link"><a href="https://github.com/corina-s/2048">gitHub</a></div>
+
+                    <div> Based on the open source project 2048 by Gabriele Cirulli.</div>
                 </div>
             </div>
         )
